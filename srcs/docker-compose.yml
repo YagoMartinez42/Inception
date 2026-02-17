@@ -6,8 +6,8 @@ services:
     ports:
       - "80:80"
 #      - "443:443"
-#  wordpress:
-#    build:
-#      context: ./requirements/wordpress
-#    container_name: wp-php
+  wordpress:
+    build:
+      context: ./requirements/wordpress
+    container_name: wp-php
 
