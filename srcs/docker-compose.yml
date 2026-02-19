@@ -6,8 +6,12 @@ services:
     ports:
       - "80:80"
 #      - "443:443"
+    volumes:
+      - ./web:/var/www/html
   wordpress:
     build:
       context: ./requirements/wordpress
     container_name: wp-php
+    volumes:
+      - ./web:/var/www/html
 

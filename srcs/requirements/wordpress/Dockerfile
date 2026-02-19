@@ -4,5 +4,6 @@ RUN apk update && apk upgrade && \
     apk add --no-cache php83-fpm && \
     mkdir -p /run/wordpress
 
-#We are working with the latest php-fpm version
+COPY ./conf/www.conf /etc/php83/php-fpm.d/www.conf
+
 CMD ["php-fpm83", "-F"]
