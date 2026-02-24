@@ -14,4 +14,10 @@ services:
     container_name: wp-php
     volumes:
       - ./web:/var/www/html
-
+  mariadb:
+    build:
+      context: ./requirements/mariadb
+    container_name: mariadb
+#    volumes:
+#      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+#      - ./web:/var/www/html
