@@ -1,4 +1,5 @@
 #!/bin/bash
+
 cd /var/www/html
 chmod +x wp-cli.phar
 ./wp-cli.phar core download --allow-root

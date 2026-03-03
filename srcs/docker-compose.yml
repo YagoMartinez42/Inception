@@ -4,7 +4,6 @@ services:
       context: ./requirements/mariadb
     container_name: mariadb
     volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
       - ./database:/var/lib/mysql
   wordpress:
     build:
@@ -24,4 +23,4 @@ services:
       - "80:80"
 #      - "443:443"
     volumes:
-      - ./web:/var/lib/nginx/html
+      - ./web:/var/www/localhost/htdocs

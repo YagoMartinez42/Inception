@@ -8,4 +8,4 @@ COPY conf/mariadb-server.cnf /etc/my.cnf.d
 COPY init.sql /etc
 COPY mdbscript.sh .
 RUN chmod +x mdbscript.sh
-CMD ["mdbscript.sh"]
+CMD ["/mdbscript.sh"]
