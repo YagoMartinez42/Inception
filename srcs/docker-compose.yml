@@ -1,19 +1,4 @@
 services:
-  nginx:
-    build:
-      context: ./requirements/nginx
-    container_name: nginx
-    ports:
-      - "80:80"
-#      - "443:443"
-    volumes:
-      - ./web:/var/lib/nginx/html
-  wordpress:
-    build:
-      context: ./requirements/wordpress
-    container_name: wp-php
-    volumes:
-      - ./web:/var/www/localhost/htdocs
   mariadb:
     build:
       context: ./requirements/mariadb
@@ -21,3 +6,22 @@ services:
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
       - ./database:/var/lib/mysql
+  wordpress:
+    build:
+      context: ./requirements/wordpress
+    container_name: wp-php
+    depends_on:
+      - mariadb
+    volumes:
+      - ./web:/var/www/localhost/htdocs
+  nginx:
+    build:
+      context: ./requirements/nginx
+    container_name: nginx
+    depends_on:
+      - wordpress
+    ports:
+      - "80:80"
+#      - "443:443"
+    volumes:
+      - ./web:/var/lib/nginx/html
