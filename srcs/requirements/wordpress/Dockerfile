@@ -4,7 +4,8 @@ RUN apk update && apk upgrade && \
     apk add --no-cache php83-fpm php83-mysqli && \
     mkdir -p /run/wordpress
 
-COPY ./conf/www.conf /etc/php83/php-fpm.d/www.conf
+COPY ./conf/www.conf /etc/php83/php-fpm.d
 COPY ./wp-cli.phar /var/www/html
-
-CMD ["php-fpm83", "-F"]
+COPY ./wpscript.sh .
+RUN chmod +x wpscript.sh
+CMD ["./wpscript.sh"]

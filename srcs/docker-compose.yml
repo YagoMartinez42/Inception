@@ -7,17 +7,17 @@ services:
       - "80:80"
 #      - "443:443"
     volumes:
-      - ./web:/var/www/html
+      - ./web:/var/lib/nginx/html
   wordpress:
     build:
       context: ./requirements/wordpress
     container_name: wp-php
     volumes:
-      - ./web:/var/www/html
+      - ./web:/var/www/localhost/htdocs
   mariadb:
     build:
       context: ./requirements/mariadb
     container_name: mariadb
-#    volumes:
-#      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
-#      - ./web:/var/www/html
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ./database:/var/lib/mysql
