@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/bin/sh
 
 if [ ! -d "/var/lib/mysql/mysql" ]; then
-    mariadb-install-db --user=root --datadir=/var/lib/mysql
+    mariadb-install-db --user=mysql --datadir=/var/lib/mysql
 fi
 
-mariadbd -F
+mariadbd --console --user=mysql

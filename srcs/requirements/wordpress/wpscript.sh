@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 cd /var/www/html
 chmod +x wp-cli.phar
