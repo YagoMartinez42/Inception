@@ -1,6 +1,7 @@
 #!/bin/sh
 
-cd /var/www/html
+mkdir -p /var/www/localhost/htdocs
+cd /var/www/localhost/htdocs
 chmod +x wp-cli.phar
 ./wp-cli.phar core download --allow-root
 ./wp-cli.phar config create --dbname=wordpress --dbuser=wpuser --dbpass=password --dbhost=mariadb --allow-root

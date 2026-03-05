@@ -5,7 +5,7 @@ RUN apk update && apk upgrade && \
     mkdir -p /run/wordpress
 
 COPY conf/www.conf /etc/php83/php-fpm.d
-COPY wp-cli.phar /var/www/html
+COPY wp-cli.phar /var/www/localhost/htdocs
 COPY wpscript.sh .
 RUN chmod +x wpscript.sh
 CMD ["/wpscript.sh"]
