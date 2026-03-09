@@ -2,7 +2,8 @@ FROM alpine:3.22
 
 RUN apk update && apk upgrade && \
     apk add --no-cache php83-fpm php83-mysqli && \
-    mkdir -p /run/wordpress
+    mkdir -p /run/wordpress && \
+    mkdir -p /var/www/localhost/htdocs
 
 COPY conf/www.conf /etc/php83/php-fpm.d
 COPY wp-cli.phar /var/www/localhost/htdocs
