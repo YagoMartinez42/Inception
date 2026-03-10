@@ -5,6 +5,11 @@ services:
     container_name: mariadb
     volumes:
       - ./database:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mariadb-admin", "ping", "-uroot"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
   wordpress:
     build:
       context: ./requirements/wordpress
@@ -20,7 +25,6 @@ services:
     depends_on:
       - wordpress
     ports:
-      - "80:80"
-#      - "443:443"
+      - "443:443"
     volumes:
       - ./web:/var/www/localhost/htdocs

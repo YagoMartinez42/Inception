@@ -19,4 +19,4 @@ remove:
 	docker compose -f ${COMPOSE_ROUTE} down --rmi all --volumes
 	sudo rm -rf srcs/database srcs/web
 
-.PHONY:		all stop clean fclean re
+.PHONY:		all stop down remove re
