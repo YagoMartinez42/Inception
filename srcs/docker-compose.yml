@@ -4,7 +4,7 @@ services:
       context: ./requirements/mariadb
     container_name: mariadb
     volumes:
-      - ./database:/var/lib/mysql
+      - mariadb_data:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mariadb-admin", "ping", "-uroot"]
       interval: 5s
@@ -17,7 +17,7 @@ services:
     depends_on:
       - mariadb
     volumes:
-      - ./web:/var/www/localhost/htdocs
+      - wordpress_data:/var/www/localhost/htdocs
   nginx:
     build:
       context: ./requirements/nginx
@@ -27,4 +27,7 @@ services:
     ports:
       - "443:443"
     volumes:
-      - ./web:/var/www/localhost/htdocs
+      - wordpress_data:/var/www/localhost/htdocs
+volumes:
+  mariadb_data:
+  wordpress_data:

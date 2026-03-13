@@ -1,7 +1,7 @@
 FROM alpine:3.22
 
 RUN apk update && apk upgrade && \
-    apk add --no-cache php83-fpm php83-mysqli && \
+    apk add --no-cache php83 php83-fpm php83-mysqli php83-phar curl tar && \
     mkdir -p /run/wordpress && \
     mkdir -p /var/www/localhost/htdocs
 

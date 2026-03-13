@@ -9,14 +9,11 @@ all: ${NAME}
 ${NAME}:
 	docker compose -p ${NAME} -f ${COMPOSE_ROUTE} up -d --remove-orphans
 
-stop:
-	docker compose -f ${COMPOSE_ROUTE} down
-
 down:
-	docker compose -f ${COMPOSE_ROUTE} down
+	docker compose -p ${NAME} -f ${COMPOSE_ROUTE} down
 
 remove:
-	docker compose -f ${COMPOSE_ROUTE} down --rmi all --volumes
+	docker compose -p ${NAME} -f ${COMPOSE_ROUTE} down --rmi all --volumes
 	sudo rm -rf srcs/database srcs/web
 
 .PHONY:		all stop down remove re
