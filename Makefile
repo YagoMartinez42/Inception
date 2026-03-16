@@ -14,6 +14,5 @@ down:
 
 remove:
 	docker compose -p ${NAME} -f ${COMPOSE_ROUTE} down --rmi all --volumes
-	sudo rm -rf srcs/database srcs/web
 
 .PHONY:		all stop down remove re
