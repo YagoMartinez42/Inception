@@ -5,8 +5,8 @@ RUN apk update && apk upgrade && \
     mkdir -p /run/mysqld && \
     chown -R mysql:mysql /run/mysqld
 
-COPY conf/mariadb-server.cnf /etc/my.cnf.d
-COPY init.sql /etc
+COPY conf/mariadb-server.cnf /etc/my.cnf.d/mariadb-server.cnf
+COPY init.sql /etc/init.sql
 COPY mdbscript.sh .
 RUN chmod +x mdbscript.sh
 CMD ["/mdbscript.sh"]

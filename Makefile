@@ -1,6 +1,6 @@
 NAME			:= inception
 COMPOSE_ROUTE	:= srcs/docker-compose.yml
-VOLUMES			:= mariadb wordpress
+VOLUMES			:= mariadb_data wordpress_data
 VOL_DIR			:= /home/samartin/data
 VOL_ROUTE		:= ${addprefix ${VOL_DIR}/,${VOLUMES}}
 
@@ -14,5 +14,7 @@ down:
 
 remove:
 	docker compose -p ${NAME} -f ${COMPOSE_ROUTE} down --rmi all --volumes
+
+re:	remove ${NAME}
 
 .PHONY:		all stop down remove re

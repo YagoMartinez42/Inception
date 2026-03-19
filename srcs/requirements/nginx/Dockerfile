@@ -10,6 +10,6 @@ RUN openssl req -x509 -newkey rsa:4096 -keyout /etc/nginx/ssl/key.pem -out /etc/
     -sha256 -days 3650 -nodes \
     -subj "/C=ES/ST=Madrid/L=Madrid/O=42Madrid/OU=Students/CN=samartin.42.fr"
 
-COPY conf/default.conf /etc/nginx/http.d
+COPY conf/default.conf /etc/nginx/http.d/default.conf
 
 CMD ["nginx", "-g", "daemon off;"]
