@@ -1,8 +1,6 @@
 NAME			:= inception
 COMPOSE_ROUTE	:= srcs/docker-compose.yml
 VOLUMES			:= mariadb_data wordpress_data
-VOL_DIR			:= /home/samartin/data
-VOL_ROUTE		:= ${addprefix ${VOL_DIR}/,${VOLUMES}}
 
 all: ${NAME}
 

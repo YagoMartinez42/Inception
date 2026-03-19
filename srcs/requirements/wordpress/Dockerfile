@@ -3,10 +3,12 @@ FROM alpine:3.22
 RUN apk update && apk upgrade && \
     apk add --no-cache php83 php83-fpm php83-mysqli php83-phar curl tar && \
     mkdir -p /var/www/localhost/htdocs
+RUN curl -fsSL -o /usr/local/bin/wp \
+      https://github.com/wp-cli/wp-cli/releases/download/v2.12.0/wp-cli-2.12.0.phar && \
+    chmod +x /usr/local/bin/wp && \
+    wp --info --allow-root
+
 COPY conf/www.conf /etc/php83/php-fpm.d/www.conf
-COPY tools/wp-cli-2.12.0.phar /var/www/localhost/htdocs
 COPY wpscript.sh .
-RUN cd /var/www/localhost/htdocs && \
-    wp core download --version=6.9.4 --allow-root
 RUN chmod +x wpscript.sh
 CMD ["/wpscript.sh"]
