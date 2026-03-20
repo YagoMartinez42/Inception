@@ -1,2 +1,2 @@
-database
-web
+srcs/secrets/
+srcs/.env
