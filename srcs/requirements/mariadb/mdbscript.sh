@@ -28,7 +28,7 @@ if [ -z "$DB_PASS" ] || [ -z "$ROOT_PASS" ]; then
 fi
 
 mkdir -p "$SOCKET_DIR"
-chown -R "$SOCKET_DIR"
+chown -R mysql:mysql "$SOCKET_DIR"
 
 if [ ! -d "${DATADIR}/mysql" ]; then
     mariadb-install-db --user=mysql --datadir=/var/lib/mysql
@@ -40,7 +40,7 @@ if [ ! -f "${INIT_MARKER}" ]; then
   mariadbd --user=mysql --datadir="${DATADIR}" --skip-networking --socket="${SOCKET}" &
   pid="$!"
 
-  until mariadb-admin --socket="${SOCKET}" ping >/dev/null 2>&1; do
+  until ${MYSQLADMIN_CLIENT} --socket="${SOCKET}" ping >/dev/null 2>&1; do
     sleep 1
   done
 
