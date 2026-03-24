@@ -37,10 +37,11 @@ fi
 chown -R mysql:mysql "${DATADIR}"
 
 if [ ! -f "${INIT_MARKER}" ]; then
+  echo "Initializing database '${DB_NAME}' and user '${DB_USER}'..."
   mariadbd --user=mysql --datadir="${DATADIR}" --skip-networking --socket="${SOCKET}" &
   pid="$!"
 
-  until ${MYSQLADMIN_CLIENT} --socket="${SOCKET}" ping >/dev/null 2>&1; do
+  until "${MYSQLADMIN_CLIENT}" --socket="${SOCKET}" ping >/dev/null 2>&1; do
     sleep 1
   done
 
@@ -56,6 +57,7 @@ SQL
   chown mysql:mysql "${INIT_MARKER}"
   "${MYSQLADMIN_CLIENT}" --socket="${SOCKET}" -uroot -p"${ROOT_PASS}" shutdown
   wait "$pid"
+  echo "Initialization done."
 fi
 
 exec mariadbd --console --user=mysql --datadir="${DATADIR}"
