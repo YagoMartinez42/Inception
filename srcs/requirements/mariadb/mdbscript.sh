@@ -50,7 +50,7 @@ if [ ! -f "${INIT_MARKER}" ]; then
       CREATE USER IF NOT EXISTS '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASS}';
       GRANT ALL PRIVILEGES ON \`${DB_NAME}\`.* TO '${DB_USER}'@'%';
       FLUSH PRIVILEGES;
-    SQL
+SQL
 
   touch "${INIT_MARKER}"
   chown mysql:mysql "${INIT_MARKER}"
