@@ -5,8 +5,8 @@ DATADIR="/var/lib/mysql"
 SOCKET_DIR="/run/mysqld"
 SOCKET="${SOCKET_DIR}/mysqld.sock"
 INIT_MARKER="${DATADIR}/.inception_initialized"
-MYSQL_CLIENT="mariadb"
-MYSQLADMIN_CLIENT="mariadb-admin"
+MYSQL_CLIENT="mysql"
+MYSQLADMIN_CLIENT="mysqladmin"
 
 read_secret() {
   file="$1"
