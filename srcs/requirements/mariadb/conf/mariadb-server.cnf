@@ -10,6 +10,8 @@
 datadir      = /var/lib/mysql
 tmpdir       = /tmp
 bind-address = 0.0.0.0
+socket       = /run/mysqld/mysqld.sock
+pid-file     = /run/mysqld/mysqld.pid
 
 # Galera-related settings
 [galera]
