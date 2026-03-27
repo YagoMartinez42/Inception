@@ -5,8 +5,8 @@ DATADIR="/var/lib/mysql"
 SOCKET_DIR="/run/mysqld"
 SOCKET="${SOCKET_DIR}/mysqld.sock"
 INIT_MARKER="${DATADIR}/.inception_initialized"
-MYSQL_CLIENT="mysql"
-MYSQLADMIN_CLIENT="mysqladmin"
+MYSQL_CLIENT="mariadb"
+MYSQLADMIN_CLIENT="mariadb-admin"
 
 read_secret() {
   file="$1"
@@ -31,7 +31,7 @@ mkdir -p "$SOCKET_DIR"
 chown -R mysql:mysql "$SOCKET_DIR"
 
 if [ ! -d "${DATADIR}/mysql" ]; then
-    mariadb-install-db --user=mysql --datadir=/var/lib/mysql
+    mariadb-install-db --user=mysql --datadir="${DATADIR}"
 fi
 
 chown -R mysql:mysql "${DATADIR}"
@@ -60,4 +60,4 @@ SQL
   echo "Initialization done."
 fi
 
-exec mariadbd --console --user=mysql --datadir="${DATADIR}"
+exec mariadbd --console --user=mysql --datadir="${DATADIR}" --socket="${SOCKET}"
