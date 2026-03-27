@@ -40,10 +40,28 @@ if [ ! -f "${INIT_MARKER}" ]; then
   echo "Initializing database '${DB_NAME}' and user '${DB_USER}'..."
   mariadbd --user=mysql --datadir="${DATADIR}" --skip-networking --socket="${SOCKET}" &
   pid="$!"
+  sleep 2
+  
+  if ! kill -0 "$pid" 2>/dev/null; then
+    echo "ERROR: mariadbd failed to start. Check logs:"
+    cat /tmp/mariadb-init.log
+    exit 1
+  fi
 
-  until "${MYSQLADMIN_CLIENT}" --socket="${SOCKET}" ping >/dev/null 2>&1; do
-    sleep 1
-  done
+WAIT_TIME=0
+until [ -S "${SOCKET}" ] && "${MYSQLADMIN_CLIENT}" --socket="${SOCKET}" ping >/dev/null 2>&1; do
+  WAIT_TIME=$((WAIT_TIME + 1))
+  if [ $WAIT_TIME -gt 30 ]; then
+    echo "ERROR: MariaDB socket not ready after 30s. Socket file exists: $([ -S "${SOCKET}" ] && echo 'yes' || echo 'no')"
+    echo "Attempting to get mariadbd status..."
+    if ! kill -0 "$pid" 2>/dev/null; then
+      echo "ERROR: mariadbd process died!"
+      cat /tmp/mariadb-init.log 2>/dev/null || echo "No init log available"
+    fi
+    exit 1
+  fi
+  sleep 1
+done
 
   "${MYSQL_CLIENT}" --socket="${SOCKET}" <<-SQL
       ALTER USER 'root'@'localhost' IDENTIFIED BY '${ROOT_PASS}';
