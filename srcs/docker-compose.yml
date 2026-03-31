@@ -1,3 +1,24 @@
+networks:
+  inception:
+    driver: bridge
+
+volumes:
+  mariadb_data:
+    name: mariadb_data
+    driver: local
+    driver_opts:
+      type: none
+      device: "/home/${USER}/data/mariadb"
+      o: bind
+  
+  wordpress_data:
+    name: wordpress_data
+    driver: local
+    driver_opts:
+      type: none
+      device: "/home/${USER}/data/wordpress"
+      o: bind
+
 services:
   mariadb:
     build:
@@ -16,6 +37,8 @@ services:
       - mariadb_data:/var/lib/mysql
     networks:
       - inception
+    expose:
+      - "3306"
     healthcheck:
       test: ["CMD-SHELL", "mariadb-admin --protocol=SOCKET --socket=/run/mysqld/mysqld.sock ping -uroot -p$(cat /run/secrets/db_root_password)"]
       interval: 5s
@@ -46,6 +69,9 @@ services:
       - wordpress_data:/var/www/localhost/htdocs
     networks:
       - inception
+    expose:
+      - "9000"
+      - "3306"
   nginx:
     build:
       context: ./requirements/nginx
@@ -55,17 +81,12 @@ services:
       - wordpress
     ports:
       - "443:443"
+    expose:
+      - "9000"
     volumes:
       - wordpress_data:/var/www/localhost/htdocs
     networks:
       - inception
-volumes:
-  mariadb_data:
-  wordpress_data:
-
-networks:
-  inception:
-    driver: bridge
 
 secrets:
   db_password:
