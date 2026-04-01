@@ -1,5 +1,5 @@
 #!/bin/sh
-set -e
+set -xe
 
 read_secret() {
   file="$1"
