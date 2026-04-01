@@ -8,4 +8,4 @@ RUN apk update && apk upgrade && \
 COPY conf/mariadb-server.cnf /etc/my.cnf.d/mariadb-server.cnf
 COPY mdbscript.sh .
 RUN chmod +x mdbscript.sh
-CMD ["/bin/sh", "-c", "/mdbscript.sh 2>&1"]
+CMD ["/mdbscript.sh"]

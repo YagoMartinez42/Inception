@@ -1,7 +1,6 @@
 #!/bin/sh
 set -e
 
-
 read_secret() {
   file="$1"
   if [ -f "$file" ]; then
@@ -29,13 +28,13 @@ fi
 
 mkdir -p /var/www/localhost/htdocs
 cd /var/www/localhost/htdocs
+  PHP="php -d memory_limit=512M"
 
 if [ ! -f wp-settings.php ]; then
-    wp core download --version=6.9.4 --allow-root
+    $PHP $(which wp) core download --version=6.9.4 --allow-root
 fi
 
 if [ ! -f wp-config.php ]; then
-  PHP="php -d memory_limit=512M"
 
   $PHP /usr/local/bin/wp config create \
     --dbname="${DB_NAME}" \

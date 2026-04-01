@@ -15,6 +15,9 @@ down:
 remove:
 	docker compose -p ${NAME} -f ${COMPOSE_ROUTE} down --rmi all --volumes
 
+logs-wordpress logs-mariadb logs-nginx: logs-%:
+	docker compose -p ${NAME} -f ${COMPOSE_ROUTE} logs $*
+
 re:	remove ${NAME}
 
 .PHONY:		all stop down remove re

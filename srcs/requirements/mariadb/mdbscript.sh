@@ -7,6 +7,7 @@ SOCKET="${SOCKET_DIR}/mysqld.sock"
 INIT_MARKER="${DATADIR}/.inception_initialized"
 MYSQL_CLIENT="mariadb"
 MYSQLADMIN_CLIENT="mariadb-admin"
+BIND_ADDR="0.0.0.0"
 
 read_secret() {
   file="$1"
@@ -48,6 +49,8 @@ if [ ! -f "${INIT_MARKER}" ]; then
     exit 1
   fi
 
+echo "levantando socket"
+
 WAIT_TIME=0
 until [ -S "${SOCKET}" ] && "${MYSQLADMIN_CLIENT}" --socket="${SOCKET}" ping >/dev/null 2>&1; do
   WAIT_TIME=$((WAIT_TIME + 1))
@@ -63,11 +66,12 @@ until [ -S "${SOCKET}" ] && "${MYSQLADMIN_CLIENT}" --socket="${SOCKET}" ping >/d
   sleep 1
 done
 
+echo "creating database"
   "${MYSQL_CLIENT}" --socket="${SOCKET}" <<EOF
-ALTER USER root@localhost IDENTIFIED BY ${ROOT_PASS};
-CREATE DATABASE IF NOT EXISTS ${DB_NAME};
-CREATE USER IF NOT EXISTS ${DB_USER}@% IDENTIFIED BY ${DB_PASS};
-GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO ${DB_USER}@%;
+ALTER USER 'root'@'localhost' IDENTIFIED BY '${ROOT_PASS}';
+CREATE DATABASE IF NOT EXISTS \`$DB_NAME\`;
+CREATE USER IF NOT EXISTS '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASS}';
+GRANT ALL PRIVILEGES ON \`$DB_NAME\`.* TO '$DB_USER'@'%';
 FLUSH PRIVILEGES;
 EOF
 
