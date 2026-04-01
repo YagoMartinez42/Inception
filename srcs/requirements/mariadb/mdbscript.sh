@@ -1,5 +1,5 @@
 #!/bin/sh
-set -xe
+set -e
 
 DATADIR="/var/lib/mysql"
 SOCKET_DIR="/run/mysqld"

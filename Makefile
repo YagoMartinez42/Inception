@@ -8,15 +8,21 @@ ${NAME}:
 	mkdir -p /home/$$USER/data/mariadb
 	mkdir -p /home/$$USER/data/wordpress
 	docker compose -p ${NAME} -f ${COMPOSE_ROUTE} up -d --build
-
+up:
+	docker compose -p ${NAME} -f ${COMPOSE_ROUTE} up -d --remove-orphans
 down:
 	docker compose -p ${NAME} -f ${COMPOSE_ROUTE} down
 
 remove:
 	docker compose -p ${NAME} -f ${COMPOSE_ROUTE} down --rmi all --volumes
+	sudo rm -rf /home/$$USER/data/mariadb
+	sudo rm -rf /home/$$USER/data/wordpress
 
 logs-wordpress logs-mariadb logs-nginx: logs-%:
 	docker compose -p ${NAME} -f ${COMPOSE_ROUTE} logs $*
+
+access-wordpress access-mariadb access-nginx: access-%:
+	docker exec -it $* sh
 
 re:	remove ${NAME}
 
