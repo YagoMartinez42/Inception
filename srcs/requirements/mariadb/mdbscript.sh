@@ -1,5 +1,5 @@
 #!/bin/sh
-set -e
+set -xe
 
 DATADIR="/var/lib/mysql"
 SOCKET_DIR="/run/mysqld"
@@ -49,10 +49,8 @@ if [ ! -f "${INIT_MARKER}" ]; then
     exit 1
   fi
 
-echo "levantando socket"
-
 WAIT_TIME=0
-until [ -S "${SOCKET}" ] && "${MYSQLADMIN_CLIENT}" --socket="${SOCKET}" ping >/dev/null 2>&1; do
+until [ -S "${SOCKET}" ] && "${MYSQLADMIN_CLIENT}" --socket="${SOCKET}" --host=localhost ping >/dev/null 2>&1; do
   WAIT_TIME=$((WAIT_TIME + 1))
   if [ $WAIT_TIME -gt 30 ]; then
     echo "ERROR: MariaDB socket not ready after 30s. Socket file exists: $([ -S "${SOCKET}" ] && echo 'yes' || echo 'no')"
@@ -66,20 +64,19 @@ until [ -S "${SOCKET}" ] && "${MYSQLADMIN_CLIENT}" --socket="${SOCKET}" ping >/d
   sleep 1
 done
 
-echo "creating database"
-  "${MYSQL_CLIENT}" --socket="${SOCKET}" <<EOF
+  "${MYSQL_CLIENT}" --socket="${SOCKET}" --host=localhost <<EOF
 ALTER USER 'root'@'localhost' IDENTIFIED BY '${ROOT_PASS}';
-CREATE DATABASE IF NOT EXISTS \`$DB_NAME\`;
+CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\`;
 CREATE USER IF NOT EXISTS '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASS}';
-GRANT ALL PRIVILEGES ON \`$DB_NAME\`.* TO '$DB_USER'@'%';
+GRANT ALL PRIVILEGES ON \`${DB_NAME}\`.* TO '${DB_USER}'@'%';
 FLUSH PRIVILEGES;
 EOF
 
   touch "${INIT_MARKER}"
   chown mysql:mysql "${INIT_MARKER}"
-  "${MYSQLADMIN_CLIENT}" --socket="${SOCKET}" -uroot -p"${ROOT_PASS}" shutdown
+  "${MYSQLADMIN_CLIENT}" --socket="${SOCKET}" --host=localhost -uroot -p"${ROOT_PASS}" shutdown
   wait "$pid"
   echo "Initialization done."
 fi
 
-exec mariadbd --console --user=mysql --datadir="${DATADIR}" --socket="${SOCKET}"
+exec mariadbd --user=mysql --datadir="${DATADIR}" --socket="${SOCKET}"

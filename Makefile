@@ -7,7 +7,7 @@ all: ${NAME}
 ${NAME}:
 	mkdir -p /home/$$USER/data/mariadb
 	mkdir -p /home/$$USER/data/wordpress
-	docker compose -p ${NAME} -f ${COMPOSE_ROUTE} up -d --remove-orphans
+	docker compose -p ${NAME} -f ${COMPOSE_ROUTE} up -d --build
 
 down:
 	docker compose -p ${NAME} -f ${COMPOSE_ROUTE} down
